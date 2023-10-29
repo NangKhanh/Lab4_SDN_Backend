@@ -17,15 +17,7 @@ async function findAll(req, res) {
                     foreignField: "_id",
                     as: "images"
                 },
-            },
-            {
-                $lookup: {
-                    from: "comments",
-                    localField: "comments._id",
-                    foreignField: "_id",
-                    as: "comments"
-                },
-            },
+            }
         ];
         return await Product.aggregate(
             productAggregate
@@ -38,13 +30,34 @@ async function findAll(req, res) {
 
 async function findOne(req, res, next) {
     const { id } = req.params;
-    try {
-        console.log(req.params.id);
-        return Product.findById(id).exec();
-    } catch (error) {
-        throw new Error(error.message)
-    }
 
+    const idP = new mongoose.Types.ObjectId(id);
+    console.log(idP);
+    try {
+        const productAggregate = [
+            {
+                $match: { _id: idP }
+            },
+            {
+                $lookup: {
+                    from: "images",
+                    localField: "images._id",
+                    foreignField: "_id",
+                    as: "images"
+                },
+            }
+        ];
+
+        const result = await Product.aggregate(productAggregate);
+        if (result && result.length > 0) {
+            return result; // Return the first element (there should be only one matching product)
+        } else {
+            // Handle the case where the product with the given ID was not found
+            return null;
+        }
+    } catch (error) {
+        throw new Error(error.message);
+    }
 }
 async function findComment(req, res, next) {
     const { id } = req.params;
