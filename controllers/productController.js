@@ -63,8 +63,8 @@ async function findComment(req, res, next) {
 async function createOne(req, res, next) {
 
     try {
-
-        const product = await productRepository.createOne(req, res, next);
+        const thumbnail = req.files
+        const product = await productRepository.createOne(req, res, next, thumbnail);
         if (product) {
             return res.status(201).json({
                 message: 'Create product successfully',

@@ -151,13 +151,15 @@ async function findComment(req, res, next) {
 //         throw new Error(error.message);
 //     }
 // }
-async function createOne(req, res, next) {
+async function createOne(req, res, next, thumbnail) {
 
 
     try {
-        console.log(req.body.images);
+        console.log(thumbnail);
         // insert many, create
-        const image = await Image.insertMany(req.body.images);
+        const image = await Image.insertMany(thumbnail);
+        // return await Image.insertMany(thumbnail);
+
         return await Product.create({
             ...req.body,
             images: image,
