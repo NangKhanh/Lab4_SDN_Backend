@@ -94,7 +94,29 @@ async function updateOne(req, res, next) {
             })
         }
         return res.status(400).json({
-            message: 'cart not found',
+            message: 'cart was pay',
+        })
+    } catch (error) {
+
+        return res.status(500).json({
+            message: error.toString()
+        })
+    }
+
+}
+async function updateCartAdd(req, res, next) {
+
+    try {
+
+        const cart = await cartRepository.updateCartAdd(req, res, next);
+        if (cart.modifiedCount > 0) {
+            return res.status(200).json({
+                message: 'Update cart successfully',
+                data: cart
+            })
+        }
+        return res.status(200).json({
+            message: 'cart was pay',
         })
     } catch (error) {
 
@@ -111,5 +133,5 @@ async function updateOne(req, res, next) {
 export default {
     findAll,
     findOne,
-    createOne, deleteOne, updateOne
+    createOne, deleteOne, updateOne, updateCartAdd
 }

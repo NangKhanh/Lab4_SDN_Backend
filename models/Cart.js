@@ -15,6 +15,7 @@ const Cart = mongoose.model("Cart", new Schema({
         quantity: Number,
         discountPercentage: Number,
         total: Number,
+
     }],
     user: {
         type: mongoose.Schema.Types.ObjectId,
